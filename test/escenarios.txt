@@ -28,3 +28,35 @@ controlador.agregarEscenario(2428698624, 375); // Ejemplo: tercer LED encendido 
 controlador.agregarEscenario(2428567552, 375); // Ejemplo: tercer LED encendido por 3 segundos
 controlador.agregarEscenario(2428698624, 375); // Ejemplo: tercer LED encendido por 3 segundos
 controlador.agregarEscenario(2428829696, 3000); // Ejemplo: tercer LED encendido por 3 segundos
+
+
+    controladorPtr->agregarEscenario(614006784,  375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(614006784,  5000); // Ejemplo: primer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(1638400,    375); // Ejemplo: segundo LED encendido por 1 segundo
+    controladorPtr->agregarEscenario(1638400,    375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(614006784,  375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(1638400,    375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(614006784,  375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(1638400,    375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(614006784,  375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(1226375168, 3000); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2451062784, 5000); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2449997824, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2451062784, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2449997824, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2451062784, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2449997824, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2451062784, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2449997824, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2451062784, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2452127744, 3000); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428698624, 5000); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428567552, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428698624, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428567552, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428698624, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428567552, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428698624, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428567552, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428698624, 375); // Ejemplo: tercer LED encendido por 3 segundos
+    controladorPtr->agregarEscenario(2428829696, 3000); // Ejemplo: tercer LED encendido por 3 segundos

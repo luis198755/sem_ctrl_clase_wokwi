@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <vector>
 #include <functional>
+#include <RTClib.h>  // Include the RTClib library
 
 class ControladorSemaforo {
 public:
@@ -26,10 +27,18 @@ public:
     uint32_t obtenerEscenarioActual() const;
     void setOnEscenarioChangeCallback(CallbackFunction callback);
 
+    // New RTC-related methods
+    bool initRTC();
+    void setDateTime(const DateTime& dt);
+    DateTime getDateTime() const;
+    void agregarEscenarioConHora(uint32_t estado, const DateTime& tiempo);
+
 private:
     struct Escenario {
         uint32_t estado;
         uint32_t duracion;
+        DateTime tiempo;  // New field for scheduled time
+        bool useTiempo;   // Flag to indicate if this scenario uses scheduled time
     };
 
     std::vector<Escenario> escenarios;
@@ -38,6 +47,7 @@ private:
     void* timer; // Using void* to avoid including esp_timer.h in the header
     Config config;
     CallbackFunction onEscenarioChange;
+    RTC_DS3231 rtc;  // RTC object
 
     ControladorSemaforo(const Config& cfg);
     ControladorSemaforo(const ControladorSemaforo&) = delete;
@@ -50,6 +60,9 @@ private:
     void initReg();
     void interfaceProg(uint32_t var32Bits);
     void ledWrite(uint8_t Reg4, uint8_t Reg3, uint8_t Reg2, uint8_t Reg1);
+    
+    // New private method for RTC-based scenario update
+    void actualizarEscenariosPorTiempo();
 };
 
 #endif // CONTROLADOR_SEMAFORO_H

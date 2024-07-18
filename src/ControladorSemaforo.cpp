@@ -1,5 +1,6 @@
 #include "ControladorSemaforo.h"
 #include "esp_timer.h"
+#include <Wire.h>
 
 ControladorSemaforo& ControladorSemaforo::getInstance(const Config& cfg) {
     static ControladorSemaforo instance(cfg);
@@ -17,8 +18,36 @@ ControladorSemaforo::~ControladorSemaforo() {
     }
 }
 
+bool ControladorSemaforo::initRTC() {
+    Wire.begin();  // Initialize I2C communication
+    if (!rtc.begin()) {
+        Serial.println("Couldn't find RTC");
+        return false;
+    }
+
+    if (rtc.lostPower()) {
+        Serial.println("RTC lost power, lets set the time!");
+        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    }
+    return true;
+}
+
+void ControladorSemaforo::setDateTime(const DateTime& dt) {
+    rtc.adjust(dt);
+}
+
+DateTime ControladorSemaforo::getDateTime() const {
+    // Create a non-const copy of rtc to call the non-const now() method
+    RTC_DS3231 rtc_copy = rtc;
+    return rtc_copy.now();
+}
+
 void ControladorSemaforo::agregarEscenario(uint32_t estado, uint32_t duracion) {
-    escenarios.push_back({estado, duracion});
+    escenarios.push_back({estado, duracion, DateTime(), false});
+}
+
+void ControladorSemaforo::agregarEscenarioConHora(uint32_t estado, const DateTime& tiempo) {
+    escenarios.push_back({estado, 0, tiempo, true});
 }
 
 void ControladorSemaforo::iniciar() {
@@ -28,6 +57,8 @@ void ControladorSemaforo::iniciar() {
 }
 
 void ControladorSemaforo::actualizar() {
+    actualizarEscenariosPorTiempo();
+    
     if (cambioEscenario) {
         cambioEscenario = false;
         Serial.printf("Escenario: %zu - Valor: %u\n", escenarioActual, escenarios[escenarioActual].estado);
@@ -60,7 +91,7 @@ void ControladorSemaforo::configurarTimer() {
 }
 
 void ControladorSemaforo::iniciarSiguienteTimer() {
-    if (!escenarios.empty()) {
+    if (!escenarios.empty() && !escenarios[escenarioActual].useTiempo) {
         esp_timer_stop(static_cast<esp_timer_handle_t>(timer));
         ESP_ERROR_CHECK(esp_timer_start_once(static_cast<esp_timer_handle_t>(timer), escenarios[escenarioActual].duracion * 1000));
     }
@@ -72,7 +103,10 @@ void ControladorSemaforo::timerCallback(void* arg) {
 }
 
 void ControladorSemaforo::siguienteEscenario() {
-    escenarioActual = (escenarioActual + 1) % escenarios.size();
+    do {
+        escenarioActual = (escenarioActual + 1) % escenarios.size();
+    } while (escenarios[escenarioActual].useTiempo);
+    
     cambioEscenario = true;
     iniciarSiguienteTimer();
 }
@@ -104,4 +138,17 @@ void ControladorSemaforo::ledWrite(uint8_t Reg4, uint8_t Reg3, uint8_t Reg2, uin
     shiftOut(config.pinData, config.pinClock, LSBFIRST, Reg1);
     digitalWrite(config.pinLatch, HIGH);
     digitalWrite(config.pinLatch, LOW);
+}
+
+void ControladorSemaforo::actualizarEscenariosPorTiempo() {
+    // Create a non-const copy of rtc to call the non-const now() method
+    RTC_DS3231 rtc_copy = rtc;
+    DateTime now = rtc_copy.now();
+    for (size_t i = 0; i < escenarios.size(); ++i) {
+        if (escenarios[i].useTiempo && escenarios[i].tiempo == now) {
+            escenarioActual = i;
+            cambioEscenario = true;
+            break;
+        }
+    }
 }
