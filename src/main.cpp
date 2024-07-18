@@ -73,12 +73,12 @@ void setup() {
     DateTime now = controladorPtr->getDateTime();
     
     // Schedule a specific pattern to start 2 minutes from now
-    DateTime twoMinutesLater = now + TimeSpan(0, 0, 1, 0);
-    controladorPtr->agregarEscenarioConHora(0b11111111111111111111111111111111, twoMinutesLater);  // All lights on
+    // DateTime twoMinutesLater = now + TimeSpan(0, 0, 1, 0);
+    // controladorPtr->agregarEscenarioConHora(0b11111111111111111111111111111111, twoMinutesLater);  // All lights on
     
     // Schedule another pattern to start 3 minutes from now
-    DateTime threeMinutesLater = now + TimeSpan(0, 0, 2, 0);
-    controladorPtr->agregarEscenarioConHora(0b00011111111111111111111111111111, threeMinutesLater);  // Yellow and Green on
+    // DateTime threeMinutesLater = now + TimeSpan(0, 0, 2, 0);
+    // controladorPtr->agregarEscenarioConHora(0b00011111111111111111111111111111, threeMinutesLater);  // Yellow and Green on
 
     controladorPtr->setOnEscenarioChangeCallback([](uint32_t estado) {
         Serial.printf("Scenario changed to: 0b%s\n", uint32ToBinaryString(estado).c_str());
@@ -94,15 +94,16 @@ void loop() {
     }
     
     // Print current time every 10 seconds
-    static uint32_t lastTimePrint = 0;
-    if (millis() - lastTimePrint >= 10000) {
-        DateTime now = controladorPtr->getDateTime();
-        Serial.printf("Current time: %04d-%02d-%02d %02d:%02d:%02d\n", 
-                      now.year(), now.month(), now.day(), 
-                      now.hour(), now.minute(), now.second());
-        lastTimePrint = millis();
-    }
+    // static uint32_t lastTimePrint = 0;
+    // if (millis() - lastTimePrint >= 10000) {
+    //     DateTime now = controladorPtr->getDateTime();
+    //     Serial.printf("Current time: %04d-%02d-%02d %02d:%02d:%02d\n", 
+    //                   now.year(), now.month(), now.day(), 
+    //                   now.hour(), now.minute(), now.second());
+    //     lastTimePrint = millis();
+    // }
     
     // Other tasks can be added here
-    delay(10);  // Small delay to prevent watchdog timer issues
+    // delay(10);  // Small delay to prevent watchdog timer issues
+    vTaskDelay(1); // Delay for 1 tick period
 }
